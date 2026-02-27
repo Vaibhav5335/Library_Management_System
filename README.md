@@ -200,7 +200,7 @@ Handles:
 ### 1️⃣ Clone Repository
 
 ```bash id="clonelms"
-git clone https://github.com/your-username/library-management-system.git
+git clone https://github.com/Vaibhav5335/Library_Management_System.git
 cd library-management-system
 ```
 
