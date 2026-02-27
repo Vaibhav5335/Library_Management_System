@@ -1,6 +1,6 @@
 # 📚 Library Management System (LMS)
 
-### Full-Stack Web Application for Managing Library Operations
+### Django Based Full-Stack Web Application for Managing Library Operations
 
 ---
 
