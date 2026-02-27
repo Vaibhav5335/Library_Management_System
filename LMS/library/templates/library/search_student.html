@@ -1,0 +1,55 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header"><h3 class="card-title">Search for a Student</h3></div>
+    <div class="card-body">
+        <form method="get" class="d-flex">
+            {{ form.query.label_tag }}
+            <input type="text" name="query" class="form-control me-2" placeholder="Enter Student ID. . ." required>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</div>
+
+{% if student %}
+<div class="card mb-4">
+    <div class="card-header"><h3 class="card-title">Student Details</h3></div>
+    <div class="card-body">
+        <h4>{{ student.name }}</h4>
+        <p><strong>Student ID:</strong> {{ student.student_id }}</p>
+        <p><strong>Email:</strong> {{ student.email }}</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><h3 class="card-title">Books Issued to {{ student.name }}</h3></div>
+    <div class="card-body">
+        {% if issued_books %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Book Title</th>
+                        <th>Book ID</th>
+                        <th>Issue Date</th>
+                        <th>Return Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in issued_books %}
+                    <tr>
+                        <td>{{ item.book.title }}</td>
+                        <td>{{ item.book.book_id }}</td>
+                        <td>{{ item.issue_date }}</td>
+                        <td>{{ item.return_date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-secondary">This student has no books currently issued.</div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

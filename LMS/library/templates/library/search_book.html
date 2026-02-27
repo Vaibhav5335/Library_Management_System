@@ -1,0 +1,41 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header"><h3 class="card-title">Search for a Book</h3></div>
+    <div class="card-body">
+        <form method="get" class="d-flex">
+            {{ form.query.label_tag }}
+            <input type="number" name="query" class="form-control me-2" placeholder="Enter Book ID..." required>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</div>
+
+{% if book %}
+<div class="card">
+    <div class="card-header"><h3 class="card-title">Search Result</h3></div>
+    <div class="card-body">
+        <h4>{{ book.title }} <small class="text-muted">by {{ book.author }}</small></h4>
+        <p><strong>Book ID:</strong> {{ book.book_id }}</p>
+        <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+        <p>
+            <strong>Status:</strong> 
+            {% if book.is_available %}
+                <span class="badge bg-success">Available</span>
+            {% else %}
+                <span class="badge bg-danger">Issued</span>
+            {% endif %}
+        </p>
+        
+        {% if issue_info %}
+        <hr>
+        <h5>Issue Information</h5>
+        <p><strong>Issued to:</strong> {{ issue_info.student.name }} ({{ issue_info.student.student_id }})</p>
+        <p><strong>Issue Date:</strong> {{ issue_info.issue_date }}</p>
+        <p><strong>Due Date:</strong> {{ issue_info.return_date }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

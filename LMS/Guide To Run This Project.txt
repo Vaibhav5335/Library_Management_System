@@ -1,0 +1,10 @@
+1. Open This Folder " LMS " In VScode.
+2. Now Open terminal and give these all commands in proper sequence :
+    (i) python -m venv .venv
+   (ii) .\.venv\Scripts\activate
+  (iii) cd LMS
+   (iv) pip install -r requirements.txt
+   (iv) pip install django
+    (V) pip install pandas
+   (vi) python manage.py migrate
+  (vii) python manage.py runserver

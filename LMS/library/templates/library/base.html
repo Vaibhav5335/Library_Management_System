@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .navbar { background-color: #343a40; }
+        .navbar-brand, .nav-link { color: white !important; }
+        .card { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .sidebar::-webkit-scrollbar {display: none;}
+        .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 250px; padding-top: 56px; background-color: #343a40;overflow-y: auto; }
+        .sidebar .nav-link { color: #adb5bd !important; }
+        .sidebar .nav-link.active { color: white !important; font-weight: bold; }
+        .sidebar .nav-link:hover { color: white !important; }
+        .content { margin-left: 250px; padding: 20px; padding-top: 76px; }
+      </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}"><i class="bi bi-book-half"></i> LibraryPro</a>
+        </div>
+
+
+        <div class="d-flex align-items-center ms-auto me-3">
+      <!-- Notification Dropdown as a Button -->
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary position-relative" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="bi bi-bell-fill fs-5"></i>
+          {% if notification_count > 0 %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.7rem;">
+              {{ notification_count }}
+              <span class="visually-hidden">unread notifications</span>
+            </span>
+          {% endif %}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+          <li class="dropdown-header">Notifications</li>
+          {% for notification in due_soon_books %}
+            <li><a class="dropdown-item" href="#">Book "{{ notification.book.title|truncatechars:20 }}" is due tomorrow.</a></li>
+          {% endfor %}
+          {% for notification in overdue_books %}
+            <li><a class="dropdown-item text-danger" href="#">Book "{{ notification.book.title|truncatechars:20 }}" is overdue!</a></li>
+          {% endfor %}
+          {% if notification_count == 0 %}
+            <li><a class="dropdown-item" href="#">No new notifications.</a></li>
+          {% endif %}
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-center" href="{% url 'notifications' %}">View all notifications</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+    </nav>
+
+    <div class="sidebar">
+        <div class="d-flex flex-column p-3">
+            <ul class="nav nav-pills flex-column mb-auto">
+                <!-- templates/library/base.html (inside the sidebar div) -->
+
+<ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item"><a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}"><i class="bi bi-house-door"></i> Dashboard</a></li>
+    <hr class="text-secondary">
+
+    <ul class="nav nav-pills flex-column mb-auto">
+  <!-- Other nav items ... -->
+  
+  <li class="nav-item">
+    <a href="{% url 'upload_working_calendar' %}" class="nav-link {% if request.resolver_match.url_name == 'upload_working_calendar' %}active{% endif %}">
+      <i class="bi bi-cloud-upload"></i> Upload Working Days
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a href="{% url 'view_working_calendar' %}" class="nav-link {% if request.resolver_match.url_name == 'view_working_calendar' %}active{% endif %}">
+      <i class="bi bi-calendar-check"></i> View Working Days
+    </a>
+  </li>
+  
+  <!-- Other nav items ... -->
+</ul>
+
+    <hr class="text-secondary">
+    <li class="nav-item"><a href="{% url 'add_book' %}" class="nav-link {% if request.resolver_match.url_name == 'add_book' %}active{% endif %}"><i class="bi bi-plus-circle"></i> Add Book</a></li>
+    <li class="nav-item"><a href="{% url 'upload_books' %}" class="nav-link {% if request.resolver_match.url_name == 'upload_books' %}active{% endif %}"><i class="bi bi-cloud-upload"></i> Bulk Add Books</a></li>
+    <li class="nav-item"><a href="{% url 'view_books' %}" class="nav-link {% if request.resolver_match.url_name == 'view_books' %}active{% endif %}"><i class="bi bi-bookshelf"></i> View Books</a></li>
+    <hr class="text-secondary">
+    <li class="nav-item"><a href="{% url 'add_student' %}" class="nav-link {% if request.resolver_match.url_name == 'add_student' %}active{% endif %}"><i class="bi bi-person-plus"></i> Add Student</a></li>
+    <li class="nav-item"><a href="{% url 'upload_students' %}" class="nav-link {% if request.resolver_match.url_name == 'upload_students' %}active{% endif %}"><i class="bi bi-cloud-upload"></i> Bulk Add Students</a></li>
+    <li class="nav-item"><a href="{% url 'view_students' %}" class="nav-link {% if request.resolver_match.url_name == 'view_students' %}active{% endif %}"><i class="bi bi-people"></i> View Students</a></li>
+    <hr class="text-secondary">
+    <li class="nav-item"><a href="{% url 'issue_book' %}" class="nav-link {% if request.resolver_match.url_name == 'issue_book' %}active{% endif %}"><i class="bi bi-box-arrow-up-right"></i> Issue Book</a></li>
+    <li class="nav-item"><a href="{% url 'view_issued_books' %}" class="nav-link {% if request.resolver_match.url_name == 'view_issued_books' %}active{% endif %}"><i class="bi bi-card-list"></i> Issued Books</a></li>
+    <hr class="text-secondary">
+    <li class="nav-item"><a href="{% url 'search_book' %}" class="nav-link {% if request.resolver_match.url_name == 'search_book' %}active{% endif %}"><i class="bi bi-search"></i> Search Book</a></li>
+    <li class="nav-item"><a href="{% url 'search_student' %}" class="nav-link {% if request.resolver_match.url_name == 'search_student' %}active{% endif %}"><i class="bi bi-search"></i> Search Student</a></li>
+</ul>
+            </ul>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
